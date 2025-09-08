@@ -41,3 +41,5 @@ out/
 
 ### Gradle ###
 gradlew*
+gradle-wrapper.jar
+.attach*
