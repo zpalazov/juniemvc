@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.hopman.leaning.juniemvc.entity.BeerEntity
 import com.hopman.leaning.juniemvc.repo.BeerRepository
 import org.hamcrest.Matchers.*
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +18,7 @@ import java.math.BigDecimal
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BeerControllerTests @Autowired constructor(
+class BeerControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
     val objectMapper: ObjectMapper,
     val beerRepository: BeerRepository,
@@ -57,6 +58,42 @@ class BeerControllerTests @Autowired constructor(
             .andExpect(jsonPath("$.id", `is`(saved.id)))
 
         mockMvc.perform(get("/api/beers/999999"))
+            .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `PUT update beer returns 200 or 404`() {
+        val saved = beerRepository.save(newBeer(upc = "UPC-UPD-1"))
+        val updated = BeerEntity(
+            name = "Updated Name",
+            style = "IPA",
+            upc = "UPC-UPD-2",
+            quantityOnHand = 20,
+            price = BigDecimal("10.49")
+        )
+        val json = objectMapper.writeValueAsString(updated)
+
+        mockMvc.perform(put("/api/beers/${saved.id}").contentType(MediaType.APPLICATION_JSON).content(json))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.name", `is`("Updated Name")))
+            .andExpect(jsonPath("$.style", `is`("IPA")))
+            .andExpect(jsonPath("$.upc", `is`("UPC-UPD-2")))
+            .andExpect(jsonPath("$.quantityOnHand", `is`(20)))
+
+        mockMvc.perform(put("/api/beers/999999").contentType(MediaType.APPLICATION_JSON).content(json))
+            .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `DELETE beer returns 204 or 404`() {
+        val saved = beerRepository.save(newBeer(upc = "UPC-DEL-1"))
+
+        mockMvc.perform(delete("/api/beers/${saved.id}"))
+            .andExpect(status().isNoContent)
+
+        assertFalse(beerRepository.findById(saved.id!!).isPresent)
+
+        mockMvc.perform(delete("/api/beers/999999"))
             .andExpect(status().isNotFound)
     }
 

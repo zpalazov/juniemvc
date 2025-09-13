@@ -3,12 +3,7 @@ package com.hopman.leaning.juniemvc.rest
 import com.hopman.leaning.juniemvc.entity.BeerEntity
 import com.hopman.leaning.juniemvc.service.BeerService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
@@ -29,4 +24,12 @@ class BeerController(
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): ResponseEntity<BeerEntity> =
         beerService.findById(id)?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Int, @RequestBody beer: BeerEntity): ResponseEntity<BeerEntity> =
+        beerService.update(id, beer)?.let { ResponseEntity.ok(it) } ?: ResponseEntity.notFound().build()
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): ResponseEntity<Void> =
+        if (beerService.delete(id)) ResponseEntity.noContent().build() else ResponseEntity.notFound().build()
 }
