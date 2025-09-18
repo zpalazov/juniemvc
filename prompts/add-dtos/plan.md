@@ -11,7 +11,7 @@ Prerequisites and Assumptions
 Step-by-Step Implementation Plan
 
 1) Add DTO package and data class
-- Create package: com.hopman.leaning.juniemvc.model
+- Create package: com.hophman.leaning.juniemvc.model
 - Add file BeerDto.kt with fields and validation per requirements:
   - id: Int? (output-only)
   - name: String (required, @field:NotBlank)
@@ -25,7 +25,7 @@ Step-by-Step Implementation Plan
 - Keep the class as a Kotlin data class under the model package. Use restricted visibility (internal) if consumed only within the module.
 
 2) Introduce MapStruct mapper
-- Create package: com.hopman.leaning.juniemvc.mapper
+- Create package: com.hophman.leaning.juniemvc.mapper
 - Add interface BeerMapper.kt with:
   - @Mapper(componentModel = "spring")
   - fun toEntity(dto: BeerDto): BeerEntity
@@ -48,14 +48,14 @@ Step-by-Step Implementation Plan
 - Document version (e.g., 1.5.x) per project standards.
 
 4) Refactor Service API to use DTOs
-- File: com.hopman.leaning.juniemvc.service.BeerService
+- File: com.hophman.leaning.juniemvc.service.BeerService
   - Change signatures to:
     • fun create(dto: BeerDto): BeerDto
     • fun findAll(): List<BeerDto>
     • fun findById(id: Int): BeerDto?
     • fun update(id: Int, dto: BeerDto): BeerDto?
     • fun delete(id: Int): Boolean
-- File: com.hopman.leaning.juniemvc.service.BeerServiceImpl
+- File: com.hophman.leaning.juniemvc.service.BeerServiceImpl
   - Inject BeerRepository and BeerMapper via constructor injection.
   - Implement methods:
     • create: mapper.toEntity(dto) -> repo.save(entity) -> mapper.toDto(saved)
@@ -66,7 +66,7 @@ Step-by-Step Implementation Plan
 - Ensure transactional boundaries: readOnly for find*, @Transactional for create/update/delete.
 
 5) Refactor Controller to use DTOs
-- File: com.hopman.leaning.juniemvc.rest.BeerController
+- File: com.hophman.leaning.juniemvc.rest.BeerController
   - Replace BeerEntity types in method signatures with BeerDto.
   - Endpoints:
     • POST /api/beers: @Valid @RequestBody BeerDto -> returns ResponseEntity.created(URI("/api/beers/{id}")).body(dto)

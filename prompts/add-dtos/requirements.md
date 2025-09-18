@@ -10,7 +10,7 @@ Scope
 
 Deliverables
 1) Model DTOs
-- Package: com.hopman.leaning.juniemvc.model
+- Package: com.hophman.leaning.juniemvc.model
 - Data classes:
   - BeerDto
     - id: Int? (output-only; ignored on inbound)
@@ -25,8 +25,8 @@ Deliverables
     - Validation: add Jakarta validation annotations for inbound where appropriate (e.g., @NotBlank for strings, @NotNull for price, positive constraints if applicable).
 
 2) Mapper
-- Package: com.hopman.leaning.juniemvc.mapper
-- Use MapStruct to convert between com.hopman.leaning.juniemvc.entity.BeerEntity and BeerDto.
+- Package: com.hophman.leaning.juniemvc.mapper
+- Use MapStruct to convert between com.hophman.leaning.juniemvc.entity.BeerEntity and BeerDto.
 - Define an interface BeerMapper with methods:
   - toEntity(dto: BeerDto): BeerEntity
     - Ignore/never map: id, version, createdDate, updateDate.
@@ -51,7 +51,7 @@ Deliverables
   - For update: load entity, apply values using mapper.updateEntityFromDto, save, return dto; return null if not found.
 
 4) Controller Changes
-- Package: com.hopman.leaning.juniemvc.rest (existing)
+- Package: com.hophman.leaning.juniemvc.rest (existing)
 - Update BeerController to operate on BeerDto:
   - POST /api/beers accepts @Valid @RequestBody BeerDto, returns 201 Created with body BeerDto and Location header /api/beers/{id}.
   - GET /api/beers returns List<BeerDto>.
@@ -77,12 +77,12 @@ Deliverables
 - From Entity to BeerDto: map all fields listed in BeerDto.
 
 8) Package Layout
-- com.hopman.leaning.juniemvc.entity – unchanged JPA entities
-- com.hopman.leaning.juniemvc.repo – repositories
-- com.hopman.leaning.juniemvc.model – new DTO (BeerDto)
-- com.hopman.leaning.juniemvc.mapper – new MapStruct mapper (BeerMapper)
-- com.hopman.leaning.juniemvc.service – updated service interface & impl
-- com.hopman.leaning.juniemvc.rest – controller using DTO
+- com.hophman.leaning.juniemvc.entity – unchanged JPA entities
+- com.hophman.leaning.juniemvc.repo – repositories
+- com.hophman.leaning.juniemvc.model – new DTO (BeerDto)
+- com.hophman.leaning.juniemvc.mapper – new MapStruct mapper (BeerMapper)
+- com.hophman.leaning.juniemvc.service – updated service interface & impl
+- com.hophman.leaning.juniemvc.rest – controller using DTO
 
 9) Acceptance Criteria
 - Controller methods no longer reference BeerEntity in signatures.
