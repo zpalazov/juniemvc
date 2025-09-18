@@ -1,7 +1,7 @@
-package com.hopman.leaning.juniemvc.service
+package com.hophman.learning.juniemvc.service
 
-import com.hopman.leaning.juniemvc.entity.BeerEntity
-import com.hopman.leaning.juniemvc.repo.BeerRepository
+import com.hophman.learning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.repo.BeerRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ class BeerServiceTest {
         captor = ArgumentCaptor.forClass(BeerEntity::class.java)
     }
 
-    @Test 
+    @Test
     fun `update returns updated entity when id exists`() {
         val existing = BeerEntity(
             id = 1,

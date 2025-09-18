@@ -1,8 +1,8 @@
-package com.hopman.leaning.juniemvc.rest
+package com.hophman.learning.juniemvc.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hopman.leaning.juniemvc.entity.BeerEntity
-import com.hopman.leaning.juniemvc.repo.BeerRepository
+import com.hophman.learning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.repo.BeerRepository
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue

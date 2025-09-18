@@ -9,7 +9,7 @@ plugins {
     kotlin("kapt") version "1.9.25"
 }
 
-group = "com.hopman.leaning"
+group = "com.hophman.learning"
 version = "0.0.1-SNAPSHOT"
 description = "juniemvc"
 

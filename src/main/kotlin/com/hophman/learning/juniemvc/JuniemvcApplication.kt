@@ -1,4 +1,4 @@
-package com.hopman.leaning.juniemvc
+package com.hophman.learning.juniemvc
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

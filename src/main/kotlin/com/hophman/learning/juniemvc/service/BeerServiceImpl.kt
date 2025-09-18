@@ -1,7 +1,7 @@
-package com.hopman.leaning.juniemvc.service
+package com.hophman.learning.juniemvc.service
 
-import com.hopman.leaning.juniemvc.entity.BeerEntity
-import com.hopman.leaning.juniemvc.repo.BeerRepository
+import com.hophman.learning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.repo.BeerRepository
 import org.springframework.stereotype.Service
 
 @Service

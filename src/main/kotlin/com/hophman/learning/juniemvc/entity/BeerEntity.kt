@@ -1,4 +1,4 @@
-package com.hopman.leaning.juniemvc.entity
+package com.hophman.learning.juniemvc.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

@@ -1,7 +1,7 @@
-package com.hopman.leaning.juniemvc.rest
+package com.hophman.learning.juniemvc.rest
 
-import com.hopman.leaning.juniemvc.entity.BeerEntity
-import com.hopman.leaning.juniemvc.service.BeerService
+import com.hophman.learning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.service.BeerService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI

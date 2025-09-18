@@ -1,6 +1,6 @@
-package com.hopman.leaning.juniemvc.service
+package com.hophman.learning.juniemvc.service
 
-import com.hopman.leaning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.entity.BeerEntity
 
 interface BeerService {
     fun create(beer: BeerEntity): BeerEntity

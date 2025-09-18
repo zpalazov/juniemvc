@@ -1,6 +1,6 @@
-package com.hopman.leaning.juniemvc.repo
+package com.hophman.learning.juniemvc.repo
 
-import com.hopman.leaning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.entity.BeerEntity
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
