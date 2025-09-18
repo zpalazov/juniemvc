@@ -1,11 +1,11 @@
 package com.hophman.learning.juniemvc.service
 
-import com.hophman.learning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.model.BeerDto
 
 interface BeerService {
-    fun create(beer: BeerEntity): BeerEntity
-    fun findAll(): List<BeerEntity>
-    fun findById(id: Int): BeerEntity?
-    fun update(id: Int, beer: BeerEntity): BeerEntity?
+    fun create(beer: BeerDto): BeerDto
+    fun findAll(): List<BeerDto>
+    fun findById(id: Int): BeerDto?
+    fun update(id: Int, beer: BeerDto): BeerDto?
     fun delete(id: Int): Boolean
 }

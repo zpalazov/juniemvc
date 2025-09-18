@@ -10,3 +10,8 @@ Write the plan to a new file called `prompts/add-dtos/plan.md`. The plan should 
 
 Create a detailed enumerated task list to implement the plan in `prompts/add-dtos/plan.md`. Task items should have a 
 placeholder [] for marking completion. Write the task list to a new file called `prompts/add-dtos/tasks.md`.
+
+------------------------------------------------------
+
+Complete the tasks in `prompts/add-dtos/tasks.md` one by one, updating the project code as needed. After completing each
+task, mark it as done by replacing [] with [x]. After all tasks are done, ensure the project compiles and tests pass.

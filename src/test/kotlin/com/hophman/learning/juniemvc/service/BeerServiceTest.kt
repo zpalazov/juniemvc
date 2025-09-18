@@ -1,6 +1,8 @@
 package com.hophman.learning.juniemvc.service
 
+import com.hophman.learning.juniemvc.model.BeerDto
 import com.hophman.learning.juniemvc.entity.BeerEntity
+import com.hophman.learning.juniemvc.mapper.BeerMapper
 import com.hophman.learning.juniemvc.repo.BeerRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -20,6 +22,9 @@ class BeerServiceTest {
     @Mock
     lateinit var beerRepository: BeerRepository
 
+    @Mock
+    lateinit var beerMapper: BeerMapper
+
     lateinit var service: BeerService
 
     @Captor
@@ -27,7 +32,7 @@ class BeerServiceTest {
 
     @BeforeEach
     fun setUp() {
-        service = BeerServiceImpl(beerRepository)
+        service = BeerServiceImpl(beerRepository, beerMapper)
         captor = ArgumentCaptor.forClass(BeerEntity::class.java)
     }
 
@@ -41,7 +46,7 @@ class BeerServiceTest {
             quantityOnHand = 5,
             price = BigDecimal("1.99")
         )
-        val input = BeerEntity(
+        val input = BeerDto(
             name = "New",
             style = "IPA",
             upc = "UPC-2",
@@ -49,7 +54,30 @@ class BeerServiceTest {
             price = BigDecimal("2.49")
         )
         given(beerRepository.findById(1)).willReturn(Optional.of(existing))
-        given(beerRepository.save(any(BeerEntity::class.java))).willAnswer { it.getArgument<BeerEntity>(0) }
+        // Stub mapper update for specific instances
+        given(beerMapper.updateEntityFromDto(input, existing)).willAnswer {
+            existing.name = input.name
+            existing.style = input.style
+            existing.upc = input.upc
+            existing.quantityOnHand = input.quantityOnHand
+            existing.price = input.price
+            existing
+        }
+        given(beerRepository.save(existing)).willReturn(existing)
+        willAnswer { inv ->
+            val e = inv.getArgument<BeerEntity>(0)
+            BeerDto(
+                id = e.id,
+                name = e.name,
+                style = e.style,
+                upc = e.upc,
+                quantityOnHand = e.quantityOnHand,
+                price = e.price,
+                version = e.version,
+                createdDate = e.createdDate,
+                updateDate = e.updateDate
+            )
+        }.given(beerMapper).toDto(existing)
 
         val result = service.update(1, input)
 
@@ -68,7 +96,7 @@ class BeerServiceTest {
     @Test
     fun `update returns null when id not found`() {
         given(beerRepository.findById(99)).willReturn(Optional.empty())
-        val result = service.update(99, BeerEntity(name = "X", style = "S", upc = "U", price = BigDecimal.ONE))
+        val result = service.update(99, BeerDto(name = "X", style = "S", upc = "U", price = BigDecimal.ONE))
         assertNull(result)
         then(beerRepository).should(never()).save(any())
     }

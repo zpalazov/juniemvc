@@ -1,6 +1,7 @@
 package com.hophman.learning.juniemvc.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.hophman.learning.juniemvc.model.BeerDto
 import com.hophman.learning.juniemvc.entity.BeerEntity
 import com.hophman.learning.juniemvc.repo.BeerRepository
 import org.hamcrest.Matchers.*
@@ -26,7 +27,7 @@ class BeerControllerTest @Autowired constructor(
 
     @Test
     fun `POST create beer returns 201 and persists`() {
-        val beer = newBeer()
+        val beer = BeerDto(name = "Test Lager", style = "LAGER", upc = System.nanoTime().toString(), quantityOnHand = 12, price = BigDecimal("9.99"))
         val json = objectMapper.writeValueAsString(beer)
 
         mockMvc.perform(post("/api/beers").contentType(MediaType.APPLICATION_JSON).content(json))
@@ -64,7 +65,7 @@ class BeerControllerTest @Autowired constructor(
     @Test
     fun `PUT update beer returns 200 or 404`() {
         val saved = beerRepository.save(newBeer(upc = "UPC-UPD-1"))
-        val updated = BeerEntity(
+        val updated = BeerDto(
             name = "Updated Name",
             style = "IPA",
             upc = "UPC-UPD-2",
