@@ -6,7 +6,7 @@ Note: Check off each item by replacing [] with [x] as you complete it.
 2. [x] Set application convention checks
    2.1. [x] Ensure spring.jpa.open-in-view=false in src/main/resources/application.yml
    2.2. [x] Confirm SLF4J logging usage; remove/avoid println in new code
-   2.3. [] Follow constructor injection and internal visibility in new components
+   2.3. [x] Follow constructor injection and internal visibility in new components
 3. [x] Domain model — Enums
    3.1. [x] Create src/main/kotlin/com/hophman/learning/juniemvc/entity/BeerOrderStatus.kt (enum persisted as STRING)
    3.2. [x] Create src/main/kotlin/com/hophman/learning/juniemvc/entity/BeerOrderLineStatus.kt (enum persisted as STRING)
@@ -79,23 +79,23 @@ Note: Check off each item by replacing [] with [x] as you complete it.
     11.2. [x] Add/extend GlobalExceptionHandler with @RestControllerAdvice to:
           - Map NotFoundException -> 404 using ProblemDetail
           - Map MethodArgumentNotValidException and ConstraintViolationException -> 400 with details
-12. [] Persistence details
-    12.1. [] Ensure snake_case names via @Table/@Column
-    12.2. [] Add indexes per plan to entities
-13. [] Tests — Service layer
-    13.1. [] Unit tests for BeerOrderService.placeOrder happy path (correct line count and quantities)
-    13.2. [] Unit test: placeOrder fails when any beerId missing (NotFoundException)
-    13.3. [] Unit test: placeOrder rejects non-positive quantities
-    13.4. [] Unit test: getOrder returns order; missing id throws NotFoundException
-14. [] Tests — Web layer
-    14.1. [] Web slice tests for BeerOrderController:
+12. [x] Persistence details
+    12.1. [x] Ensure snake_case names via @Table/@Column
+    12.2. [x] Add indexes per plan to entities
+13. [x] Tests — Service layer
+    13.1. [x] Unit tests for BeerOrderService.placeOrder happy path (correct line count and quantities)
+    13.2. [x] Unit test: placeOrder fails when any beerId missing (NotFoundException)
+    13.3. [x] Unit test: placeOrder rejects non-positive quantities
+    13.4. [x] Unit test: getOrder returns order; missing id throws NotFoundException
+14. [x] Tests — Web layer
+    14.1. [x] Web slice tests for BeerOrderController:
           - POST happy path returns 201 with expected JSON
           - GET existing returns 200; missing returns 404
-    14.2. [] If using SpringBootTest, ensure RANDOM_PORT
-15. [] Build & verify
-    15.1. [] Build project and run all tests
-    15.2. [] Verify Hibernate schema output includes beer_orders and beer_order_lines with composite PK, FKs, and indexes
-16. [] Final review
-    16.1. [] Ensure guidelines adherence (constructor injection, restricted visibility, logging)
-    16.2. [] Ensure code style and package layout matches plan
-    16.3. [] Update this tasks.md by marking completed items as [x] as you progress
+    14.2. [x] If using SpringBootTest, ensure RANDOM_PORT
+15. [x] Build & verify
+    15.1. [x] Build project and run all tests
+    15.2. [x] Verify Hibernate schema output includes beer_orders and beer_order_lines with composite PK, FKs, and indexes
+16. [x] Final review
+    16.1. [x] Ensure guidelines adherence (constructor injection, restricted visibility, logging)
+    16.2. [x] Ensure code style and package layout matches plan
+    16.3. [x] Update this tasks.md by marking completed items as [x] as you progress
