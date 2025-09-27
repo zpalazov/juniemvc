@@ -241,3 +241,9 @@ logger.atDebug()
 **Explanation:**
 
 * Flexible verbosity control, rich metadata (MDC), multiple outputs/formats, and better analysis tooling.
+
+## 15. Flyway Migrations with Spring Boot
+* Default locations: place SQL migrations under `src/main/resources/db/migration` (classpath:`db/migration`). Spring Boot auto-detects and runs them on startup when Flyway is on the classpath.
+* Versioned migration naming: `V{version}__Description.sql` (double underscore). Examples: `V1__init_schema.sql`, `V2_1__add_orders_table.sql`.
+* Repeatable migrations (optional): `R__Description.sql` re-run when their checksum changes. Example: `R__refresh_views.sql`.
+* Keep migrations idempotent and small; avoid editing applied versioned scripts—add a new one instead.
