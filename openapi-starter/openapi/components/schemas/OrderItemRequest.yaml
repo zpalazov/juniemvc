@@ -1,0 +1,13 @@
+type: object
+properties:
+  beerId:
+    type: integer
+    format: int32
+    minimum: 1
+  quantity:
+    type: integer
+    format: int32
+    minimum: 1
+required:
+  - beerId
+  - quantity

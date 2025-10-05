@@ -1,0 +1,21 @@
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: integer
+      format: int32
+get:
+  tags:
+    - Beer Orders
+  summary: Get a beer order by id
+  operationId: beerOrdersGetById
+  responses:
+    '200':
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderResponse.yaml'
+    '404':
+      $ref: '../components/responses/Problem.yaml'

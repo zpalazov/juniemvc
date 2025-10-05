@@ -1,0 +1,18 @@
+type: object
+properties:
+  beerId:
+    type: integer
+    format: int32
+  beerName:
+    anyOf:
+      - type: string
+      - type: 'null'
+  orderQuantity:
+    type: integer
+    format: int32
+  status:
+    type: string
+required:
+  - beerId
+  - orderQuantity
+  - status

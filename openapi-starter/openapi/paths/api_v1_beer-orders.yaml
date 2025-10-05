@@ -1,0 +1,20 @@
+post:
+  tags:
+    - Beer Orders
+  summary: Place a beer order
+  operationId: beerOrdersPlace
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/PlaceBeerOrderRequest.yaml'
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderResponse.yaml'
+    '400':
+      $ref: '../components/responses/Problem.yaml'

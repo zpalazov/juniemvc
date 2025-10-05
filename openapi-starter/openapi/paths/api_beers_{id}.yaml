@@ -1,0 +1,53 @@
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: integer
+      format: int32
+get:
+  tags:
+    - Beers
+  summary: Get beer by id
+  operationId: beersGetById
+  responses:
+    '200':
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Beer.yaml'
+    '404':
+      $ref: '../components/responses/Problem.yaml'
+put:
+  tags:
+    - Beers
+  summary: Update beer by id
+  operationId: beersUpdateById
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/Beer.yaml'
+  responses:
+    '200':
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Beer.yaml'
+    '400':
+      $ref: '../components/responses/Problem.yaml'
+    '404':
+      $ref: '../components/responses/Problem.yaml'
+delete:
+  tags:
+    - Beers
+  summary: Delete beer by id
+  operationId: beersDeleteById
+  responses:
+    '204':
+      description: No Content
+    '404':
+      $ref: '../components/responses/Problem.yaml'

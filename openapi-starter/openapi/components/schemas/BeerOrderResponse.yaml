@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int32
+  customerRef:
+    type: string
+  status:
+    type: string
+  paymentAmount:
+    anyOf:
+      - type: number
+        format: double
+      - type: 'null'
+  createdDate:
+    anyOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  updatedDate:
+    anyOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  lines:
+    type: array
+    items:
+      $ref: './BeerOrderLineResponse.yaml'
+required:
+  - id
+  - customerRef
+  - status
+  - lines
