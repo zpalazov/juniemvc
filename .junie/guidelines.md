@@ -247,3 +247,74 @@ logger.atDebug()
 * Versioned migration naming: `V{version}__Description.sql` (double underscore). Examples: `V1__init_schema.sql`, `V2_1__add_orders_table.sql`.
 * Repeatable migrations (optional): `R__Description.sql` re-run when their checksum changes. Example: `R__refresh_views.sql`.
 * Keep migrations idempotent and small; avoid editing applied versioned scripts—add a new one instead.
+
+
+---
+
+# OpenAPI Documentation & Conventions
+
+This project includes a modular OpenAPI 3.1 specification under `openapi-starter/openapi`. The spec is authored using file references to keep the definition organized and maintainable and is served/bundled with Redocly CLI.
+
+Location overview
+- Root spec: `openapi-starter/openapi/openapi.yaml`
+- Paths (endpoints): `openapi-starter/openapi/paths/*.yaml`
+- Components (reusable pieces): `openapi-starter/openapi/components/**` (e.g., `schemas`, `responses`, `headers`)
+- Dev tooling: `openapi-starter/package.json` (scripts for preview, bundle, lint/test)
+
+How file references are used
+- The root `openapi.yaml` references individual path files:
+  - Example mappings from the spec:
+    - `/users/{username}` → `$ref: 'paths/users_{username}.yaml'`
+    - `/user` → `$ref: 'paths/user.yaml'`
+    - `/user/list` → `$ref: 'paths/user-status.yaml'`
+    - `/echo` → `$ref: 'paths/echo.yaml'`
+  - Each referenced path file contains the operations (get/post/put/delete), their parameters, request bodies, and responses.
+- Path files then reference component files using relative paths:
+  - Schemas: `$ref: '../components/schemas/User.yaml'`
+  - Responses: `$ref: '../components/responses/Problem.yaml'`
+  - Headers: `$ref: '../components/headers/ExpiresAfter.yaml'`
+
+Path file naming conventions
+- Use descriptive file names that reflect the API path.
+  - Single-segment paths typically match the segment name: `/user` → `paths/user.yaml`.
+  - Paths with parameters replace slashes with underscores and keep `{param}` braces: `/users/{username}` → `paths/users_{username}.yaml`.
+  - Multi-segment paths can use either literal joining or a concise, descriptive name. The repository shows an example of a descriptive alias: `/user/list` → `paths/user-status.yaml`.
+- Recommendation when adding new endpoints:
+  - Prefer a direct, readable mapping (e.g., `/orders/{id}/items` → `paths/orders_{id}_items.yaml`).
+  - If a direct mapping becomes unwieldy, choose a short, meaningful alias (document it in the PR).
+
+Components structure and references
+- Schemas: `components/schemas/*.yaml`
+  - Example files: `User.yaml`, `Admin.yaml`, `Basic.yaml`, `Email.yaml`, `UserID.yaml`, `Problem.yaml`, `ExampleObject.yaml`, `Schema.yaml`.
+  - Schemas compose via `$ref` and keywords like `allOf`, `anyOf`, and can define discriminators for polymorphism.
+  - Example: `paths/user.yaml` request body discriminator maps to `../components/schemas/Admin.yaml` and `../components/schemas/Basic.yaml`.
+- Responses: `components/responses/*.yaml`
+  - Example: `Problem.yaml` wraps the `application/problem+json` schema by referencing `../schemas/Problem.yaml`.
+- Headers: `components/headers/*.yaml`
+  - Example: `ExpiresAfter.yaml` is referenced in response headers of `paths/echo.yaml` and others.
+- Security schemes are defined inline under `components.securitySchemes` in `openapi.yaml` (e.g., `oauth2`, `apiKey`, `basic`).
+
+Adding a new endpoint (quick recipe)
+- Create a new file under `openapi-starter/openapi/paths/` with the chosen name.
+- Define the operations and use `$ref` to reusable components for schemas/responses/headers.
+- Add a `$ref` entry under `paths:` in `openapi-starter/openapi/openapi.yaml` that points to your new path file.
+
+Testing (linting) the OpenAPI specification
+- The project uses Redocly CLI via npm scripts in `openapi-starter/package.json`.
+- Commands:
+  1) cd openapi-starter
+  2) npm install   # first time or when dependencies change
+  3) npm test      # runs `redocly lint` against the OpenAPI definition
+- Expected behavior:
+  - The linter will validate structure, references, and recommended practices. Fix any reported issues in the referenced files.
+
+Optional local preview and bundle
+- Preview docs locally (Redoc):
+  - cd openapi-starter && npm start   # runs `redocly preview-docs`
+- Produce a bundled single-file spec:
+  - cd openapi-starter && npm run build   # outputs `dist/bundle.yaml`
+
+Notes
+- Keep relative `$ref` paths correct when moving files (e.g., `../components/...` from `paths/*`).
+- Prefer small, focused component files to maximize reuse.
+- When introducing new naming patterns, be consistent and update this section if necessary.

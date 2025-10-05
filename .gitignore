@@ -43,3 +43,6 @@ out/
 gradlew*
 gradle-wrapper.jar
 .attach*
+
+### Rediocly CLI ###
+openapi-starter/node_modules/
