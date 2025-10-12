@@ -1,6 +1,6 @@
 # Spring Boot Guidelines (Kotlin)
 
-## 1. Prefer Constructor Injection over Field/Setter Injection
+## Prefer Constructor Injection over Field/Setter Injection
 * Declare mandatory dependencies as constructor parameters and store them in `val` properties.
 * Spring will auto-detect the primary constructor; no need to add `@Autowired`.
 * Avoid field/setter injection (including `lateinit var`) in production code.
@@ -27,7 +27,7 @@ class OrderService(
 }
 ```
 
-## 2. Prefer restricted visibility for Spring components
+## Prefer restricted visibility for Spring components
 * In Kotlin, top-level declarations and classes are `public` by default. Prefer the most restrictive visibility that works for your use case (e.g., `internal`).
 * Controller handler methods do not need to be `public`; default visibility is fine.
 * `@Configuration` classes and `@Bean` methods can also use restricted visibility where appropriate.
@@ -37,8 +37,8 @@ class OrderService(
 * Restricting visibility improves encapsulation and hides implementation details from other modules/packages.
 * Spring's component scanning and reflection can work with non-public members; keep APIs as small as possible.
 
-## 3. Organize Configuration with Typed Properties
-* Group application-specific configuration under a common prefix in `application.yml` or `application.properties`.
+## Organize Configuration with Typed Properties
+* Group application-specific configuration under a common prefix in `application.yml`.
 * Bind them to a Kotlin `@ConfigurationProperties` class, using constructor binding and validation annotations.
 * Prefer environment variables for environment differences instead of profiles.
 
@@ -63,7 +63,7 @@ class CatalogConfig
 
 Note: With Spring Boot 3, explicit `@ConstructorBinding` is optional when using constructor parameters.
 
-## 4. Define Clear Transaction Boundaries
+## Define Clear Transaction Boundaries
 * Define each service-layer method as a transactional unit.
 * Annotate query-only methods with `@Transactional(readOnly = true)`.
 * Annotate data-modifying methods with `@Transactional`.
@@ -91,14 +91,14 @@ class CustomerService(private val repo: CustomerRepository) {
 }
 ```
 
-## 5. Disable Open Session in View Pattern
-* With Spring Data JPA, disable OSIV by setting `spring.jpa.open-in-view=false` in `application.yml/properties`.
+## Disable Open Session in View Pattern
+* With Spring Data JPA, disable OSIV by setting `spring.jpa.open-in-view=false` in `application.yml`.
 
 **Explanation:**
 
 * Prevents unexpected lazy loading at serialization time, avoids N+1 selects, and surfaces missing fetches early.
 
-## 6. Separate Web Layer from Persistence Layer
+## Separate Web Layer from Persistence Layer
 * Do not expose JPA entities directly from controllers.
 * Define explicit request and response DTOs as Kotlin `data class`es.
 * Apply Jakarta Validation annotations on request DTOs.
@@ -122,7 +122,7 @@ data class OrderResponse(
 )
 ```
 
-## 7. Follow REST API Design Principles
+## Follow REST API Design Principles
 * Versioned, resource-oriented URLs: `/api/v{version}/resources` (e.g., `/api/v1/orders`).
 * Consistent patterns for collections and sub-resources (e.g., `/posts` and `/posts/{slug}/comments`).
 * Return explicit HTTP status codes via `ResponseEntity` or use `@ResponseStatus` on exceptions.
@@ -150,7 +150,7 @@ class OrderController(private val service: OrderService) {
 }
 ```
 
-## 8. Use Command Objects for Business Operations
+## Use Command Objects for Business Operations
 * Create purpose-built command objects (Kotlin `data class`) like `CreateOrderCommand`.
 * Accept these commands in service methods to drive workflows.
 
@@ -165,7 +165,7 @@ data class CreateOrderCommand(
 )
 ```
 
-## 9. Centralize Exception Handling
+## Centralize Exception Handling
 * Create a global handler annotated with `@RestControllerAdvice` using `@ExceptionHandler` methods.
 * Return consistent error responses, ideally Problem Details (RFC 9457). In Spring 6, you can use `ProblemDetail`.
 
@@ -188,18 +188,19 @@ class GlobalExceptionHandler {
 }
 ```
 
-## 10. Actuator
+## Actuator
 * Expose only essential actuator endpoints (`/health`, `/info`, `/metrics`) without authentication; secure the rest.
 * In non-production (DEV/QA), you may expose additional endpoints (`/beans`, `/loggers`) for diagnostics.
 
-## 11. Internationalization with ResourceBundles
+## Internationalization with ResourceBundles
 * Externalize user-facing text into `messages_*.properties` files instead of hardcoding strings.
 
 **Explanation:**
 
 * Enables multiple languages and dynamic locale selection.
 
-## 12. Use Testcontainers for integration tests
+## Test Guidelines
+## Use Testcontainers for integration tests
 * Spin up real services (databases, brokers, etc.) with Testcontainers in integration tests.
 * Use fixed, explicit image versions (avoid `latest`).
 
@@ -207,7 +208,10 @@ class GlobalExceptionHandler {
 
 * Reduces environment inconsistencies and increases confidence.
 
-## 13. Use random port for integration tests
+## For simple JPA tests, use slice tests with `@DataJpaTest`
+* Use H2 in-memory database for fast tests.
+
+## Use random port for integration tests
 * Start the app on a random port to avoid conflicts:
 
 ```kotlin
@@ -219,7 +223,10 @@ class MyHttpTest
 
 * Prevents port conflicts in parallel CI builds.
 
-## 14. Logging
+## Unit tests
+* Use JUnit 5 (Jupiter) and Mockk for unit tests.
+
+## Logging
 * Use a proper logging framework; do not use `println` for application logs. Prefer SLF4J with Logback/Log4j2.
 * Never log sensitive data.
 * Guard expensive log calls.
@@ -242,12 +249,14 @@ logger.atDebug()
 
 * Flexible verbosity control, rich metadata (MDC), multiple outputs/formats, and better analysis tooling.
 
-## 15. Flyway Migrations with Spring Boot
+## Flyway Migrations with Spring Boot
 * Default locations: place SQL migrations under `src/main/resources/db/migration` (classpath:`db/migration`). Spring Boot auto-detects and runs them on startup when Flyway is on the classpath.
 * Versioned migration naming: `V{version}__Description.sql` (double underscore). Examples: `V1__init_schema.sql`, `V2_1__add_orders_table.sql`.
 * Repeatable migrations (optional): `R__Description.sql` re-run when their checksum changes. Example: `R__refresh_views.sql`.
 * Keep migrations idempotent and small; avoid editing applied versioned scripts—add a new one instead.
-
+* Use H2 complaint syntax for DB migrations.
+* When altering a table to add a foreign key, add the new column first and then in the next SQL statement add the 
+foreign key constraint.
 
 ---
 

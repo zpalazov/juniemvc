@@ -29,6 +29,10 @@ open class BeerOrderEntity(
     @Column(nullable = false)
     var status: BeerOrderStatus = BeerOrderStatus.NEW,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    var customer: CustomerEntity? = null,
+
     @OneToMany(
         mappedBy = "beerOrder",
         cascade = [CascadeType.ALL],
