@@ -1,5 +1,8 @@
 # Spring Boot Guidelines (Kotlin)
 
+## Code structure
+* Use explicit types unless the type is obvious from the right-hand side (e.g., `val x = 42`, `val name = "John"`).
+
 ## Prefer Constructor Injection over Field/Setter Injection
 * Declare mandatory dependencies as constructor parameters and store them in `val` properties.
 * Spring will auto-detect the primary constructor; no need to add `@Autowired`.
@@ -102,6 +105,7 @@ class CustomerService(private val repo: CustomerRepository) {
 * Do not expose JPA entities directly from controllers.
 * Define explicit request and response DTOs as Kotlin `data class`es.
 * Apply Jakarta Validation annotations on request DTOs.
+* Do not use REST layer's request bodies classes in the service layer; map to/from service layer DTOs.
 
 **Explanation:**
 
@@ -210,6 +214,7 @@ class GlobalExceptionHandler {
 
 ## For simple JPA tests, use slice tests with `@DataJpaTest`
 * Use H2 in-memory database for fast tests.
+* Use Spring data repositories or pure SQL for verification.
 
 ## Use random port for integration tests
 * Start the app on a random port to avoid conflicts:
@@ -225,6 +230,7 @@ class MyHttpTest
 
 ## Unit tests
 * Use JUnit 5 (Jupiter) and Mockk for unit tests.
+* Test names should follow the convention `when condition then result`.
 
 ## Logging
 * Use a proper logging framework; do not use `println` for application logs. Prefer SLF4J with Logback/Log4j2.
