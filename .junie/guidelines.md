@@ -1,7 +1,17 @@
-# Spring Boot Guidelines (Kotlin)
-
+# Code structure guidelines (Kotlin)
 ## Code structure
 * Use explicit types unless the type is obvious from the right-hand side (e.g., `val x = 42`, `val name = "John"`).
+
+* Add an empty line before function return statement.
+```kotlin
+  fun calculateTotal(items: List<Item>): BigDecimal {
+      val total = items.sumOf { it.price }
+      
+      return total
+  }
+```
+
+# Spring Boot guidelines
 
 ## Prefer Constructor Injection over Field/Setter Injection
 * Declare mandatory dependencies as constructor parameters and store them in `val` properties.
@@ -10,10 +20,12 @@
 
 **Explanation:**
 
-* With Kotlin, making dependencies `val` properties initialized via the primary constructor ensures immutability and a properly initialized state without framework magic.
+* With Kotlin, making dependencies `val` properties initialized via the primary constructor ensures immutability and a 
+properly initialized state without framework magic.
 * It simplifies testing because you can instantiate the class with plain constructors.
 * Constructor-based injection makes dependencies explicit and self-documenting.
-* Spring Boot provides builder extension points such as `RestClient.Builder`, `ChatClient.Builder`, etc. Use constructor-injection to customize and build the final dependency.
+* Spring Boot provides builder extension points such as `RestClient.Builder`, `ChatClient.Builder`, etc. Use 
+constructor-injection to customize and build the final dependency.
 
 ```kotlin
 @Service
@@ -204,7 +216,12 @@ class GlobalExceptionHandler {
 * Enables multiple languages and dynamic locale selection.
 
 ## Test Guidelines
-## Use Testcontainers for integration tests
+
+### Separate test data from the test logic
+* Use external Kotlin object for constants and test data builders.
+* Name convention is TestData${ComponentUnderTest} e.g. `TestDadaFooService`
+
+### Use Testcontainers for integration tests
 * Spin up real services (databases, brokers, etc.) with Testcontainers in integration tests.
 * Use fixed, explicit image versions (avoid `latest`).
 
@@ -212,23 +229,15 @@ class GlobalExceptionHandler {
 
 * Reduces environment inconsistencies and increases confidence.
 
-## For simple JPA tests, use slice tests with `@DataJpaTest`
+### For simple JPA tests, use slice tests with `@DataJpaTest`
 * Use H2 in-memory database for fast tests.
 * Use Spring data repositories or pure SQL for verification.
 
-## Use random port for integration tests
-* Start the app on a random port to avoid conflicts:
+### Use WebMvc Test for REST tests
+* Add test for success response
+* Add test for different validation errors, check response code and error response body
 
-```kotlin
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MyHttpTest
-```
-
-**Explanation:**
-
-* Prevents port conflicts in parallel CI builds.
-
-## Unit tests
+### Unit tests
 * Use JUnit 5 (Jupiter) and Mockk for unit tests.
 * Test names should follow the convention `when condition then result`.
 
