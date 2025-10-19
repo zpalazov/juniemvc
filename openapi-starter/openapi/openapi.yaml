@@ -52,6 +52,8 @@ tags:
     description: "Operations for managing beers."
   - name: Beer Orders
     description: "Operations for placing and retrieving beer orders."
+  - name: Customers
+    description: "Operations for managing customers."
 servers:
   - url: https://{tenant}/api/v1
     variables:
@@ -67,6 +69,10 @@ paths:
     $ref: 'paths/api_v1_beer-orders.yaml'
   '/api/v1/beer-orders/{id}':
     $ref: 'paths/api_v1_beer-orders_{id}.yaml'
+  /api/v1/customers:
+    $ref: 'paths/api_v1_customers.yaml'
+  '/api/v1/customers/{id}':
+    $ref: 'paths/api_v1_customers_{id}.yaml'
 components:
   securitySchemes:
     main_auth:

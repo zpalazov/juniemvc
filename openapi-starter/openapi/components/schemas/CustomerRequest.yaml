@@ -1,0 +1,30 @@
+type: object
+properties:
+  name:
+    type: string
+    minLength: 1
+  email:
+    type: string
+    format: email
+  phone:
+    type: string
+  addressLine1:
+    type: string
+    minLength: 1
+  addressLine2:
+    type: string
+  city:
+    type: string
+    minLength: 1
+  state:
+    type: string
+    minLength: 1
+  postalCode:
+    type: string
+    minLength: 1
+required:
+  - name
+  - addressLine1
+  - city
+  - state
+  - postalCode

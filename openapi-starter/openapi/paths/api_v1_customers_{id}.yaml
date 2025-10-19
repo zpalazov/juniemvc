@@ -1,0 +1,62 @@
+get:
+  tags:
+    - Customers
+  summary: Get customer by ID
+  operationId: customersGetById
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerResponse.yaml'
+    '404':
+      $ref: '../components/responses/Problem.yaml'
+put:
+  tags:
+    - Customers
+  summary: Update customer
+  operationId: customersUpdate
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/CustomerUpdateRequest.yaml'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerResponse.yaml'
+    '400':
+      $ref: '../components/responses/Problem.yaml'
+delete:
+  tags:
+    - Customers
+  summary: Delete customer
+  operationId: customersDelete
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: No Content
+    '404':
+      $ref: '../components/responses/Problem.yaml'

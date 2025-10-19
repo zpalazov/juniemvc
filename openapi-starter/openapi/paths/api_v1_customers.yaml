@@ -1,0 +1,70 @@
+get:
+  tags:
+    - Customers
+  summary: List customers
+  operationId: customersList
+  parameters:
+    - in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 0
+      description: Page number (0-based)
+    - in: query
+      name: size
+      schema:
+        type: integer
+        minimum: 1
+      description: Page size
+    - in: query
+      name: sort
+      schema:
+        type: string
+      description: "Sort criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported."
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              content:
+                type: array
+                items:
+                  $ref: '../components/schemas/CustomerResponse.yaml'
+              totalElements:
+                type: integer
+              totalPages:
+                type: integer
+              size:
+                type: integer
+              number:
+                type: integer
+    '400':
+      $ref: '../components/responses/Problem.yaml'
+post:
+  tags:
+    - Customers
+  summary: Create a customer
+  operationId: customersCreate
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/CustomerRequest.yaml'
+  responses:
+    '201':
+      description: Created
+      headers:
+        Location:
+          description: URI of the created resource
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerResponse.yaml'
+    '400':
+      $ref: '../components/responses/Problem.yaml'
